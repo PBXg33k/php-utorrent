@@ -16,6 +16,11 @@ final class UtorrentClientTest extends TestCase
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject
      */
+    protected $cacheItem;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject
+     */
     protected $client;
 
     const HOST = '127.0.0.1';
@@ -26,11 +31,15 @@ final class UtorrentClientTest extends TestCase
 
     protected function setUp()
     {
-        $cache = $this->cache = $this->getMockBuilder(\Cache\Adapter\Void\VoidCachePool::class)
+        $cache = $this->cache = $this->getMockBuilder(\Psr\Cache\CacheItemPoolInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $client = $this->client = $this->getMockBuilder(\GuzzleHttp\ClientInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->cacheItem = $this->getMockBuilder(\Psr\Cache\CacheItemInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -48,5 +57,42 @@ final class UtorrentClientTest extends TestCase
         $this->assertEquals(self::USER, $this->utorrentClient->getUsername());
         $this->assertEquals(self::PASS, $this->utorrentClient->getPassword());
         $this->assertEquals(self::PATH, $this->utorrentClient->getPath());
+    }
+
+    /**
+     * @test
+     */
+    public function canGetToken()
+    {
+        $this->cache->expects($this->once())->method('getItem')->willReturn($this->cacheItem);
+
+        $this->cacheItem->expects($this->once())->method('isHit')->willReturn(false);
+        $this->client->expects($this->once())->method('request')->willReturn(
+            new \GuzzleHttp\Psr7\Response(200,[], file_get_contents(__DIR__.'/mock-response/token'))
+        );
+
+        $this->cacheItem->expects($this->once())->method('set')->willReturn(true);
+        $this->cacheItem->expects($this->once())->method('expiresAt')->willReturn(true);
+        $this->cache->expects($this->once())->method('save')->willReturn(true);
+
+        $result = $this->utorrentClient->getToken();
+        $this->assertInstanceOf(\Pbxg33k\UtorrentClient\Model\Token::class, $result);
+        $this->assertEquals('servertoken', $result->getToken());
+        $this->assertSame((new \DateTime('+ 25 min'))->format(DATE_ISO8601), $result->getExpirationDateTime()->format(DATE_ISO8601));
+        $this->assertSame((new \DateTime())->format(DATE_ISO8601), $result->getCreatedDateTime()->format(DATE_ISO8601));
+    }
+
+    /**
+     * @test
+     */
+    public function tokenIsCached()
+    {
+        $token = new \Pbxg33k\UtorrentClient\Model\Token('cachedToken');
+
+        $this->cache->expects($this->once())->method('getItem')->willReturn($this->cacheItem);
+        $this->cacheItem->expects($this->once())->method('isHit')->willReturn(true);
+        $this->cacheItem->expects($this->any())->method('get')->willReturn($token);
+
+        $this->assertSame($token, $this->utorrentClient->getToken());
     }
 }

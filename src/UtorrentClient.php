@@ -313,7 +313,7 @@ class UtorrentClient
     /**
      * @return ClientInterface
      */
-    public function getClient(): Client
+    public function getClient(): ClientInterface
     {
         if(!$this->client) {
             $this->setClient(new Client());
