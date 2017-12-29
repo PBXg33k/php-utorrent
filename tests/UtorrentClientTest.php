@@ -66,9 +66,9 @@ final class UtorrentClientTest extends TestCase
     {
         $this->cache->expects($this->once())->method('getItem')->willReturn($this->cacheItem);
 
-        $this->cacheItem->expects($this->once())->method('isHit')->willReturn(false);
+        $this->cacheItem->expects($this->once())->method('isHit');
         $this->client->expects($this->once())->method('request')->willReturn(
-            new \GuzzleHttp\Psr7\Response(200,[], file_get_contents(__DIR__.'/mock-response/token'))
+            $this->buildResponse(file_get_contents(__DIR__.'/mock-response/token'))
         );
 
         $this->cacheItem->expects($this->once())->method('set')->willReturn(true);
@@ -87,12 +87,48 @@ final class UtorrentClientTest extends TestCase
      */
     public function tokenIsCached()
     {
-        $token = new \Pbxg33k\UtorrentClient\Model\Token('cachedToken');
+        $token = $this->injectToken();
 
         $this->cache->expects($this->once())->method('getItem')->willReturn($this->cacheItem);
         $this->cacheItem->expects($this->once())->method('isHit')->willReturn(true);
         $this->cacheItem->expects($this->any())->method('get')->willReturn($token);
 
         $this->assertSame($token, $this->utorrentClient->getToken());
+    }
+
+    /**
+     * @test
+     */
+    public function getTorrentsReturnsListOfTorrents()
+    {
+        $this->injectToken();
+
+        $this->client->expects($this->once())->method('send')->willReturn(
+            $this->buildResponse(file_get_contents(__DIR__.'/mock-response/action-list'))
+        );
+
+        $this->cache->expects($this->exactly(2))->method('getItem')->willReturn($this->cacheItem);
+        $this->cacheItem->expects($this->exactly(2))->method('isHit');
+        $this->cacheItem->expects($this->exactly(2))->method('set');
+        $this->cache->expects($this->exactly(2))->method('saveDeferred');
+        $this->cache->expects($this->once())->method('commit');
+
+        $result = $this->utorrentClient->getTorrents();
+
+        $this->assertSame('1234567890ABCDEF1234567890ABCDEF12345678', $result->getTorrents()->first()->getHash());
+    }
+
+    protected function injectToken()
+    {
+        $token = new \Pbxg33k\UtorrentClient\Model\Token('cachedToken');
+
+        $this->utorrentClient->setToken($token);
+
+        return $token;
+    }
+
+    protected function buildResponse(string $content, int $statusCode = 200)
+    {
+        return new \GuzzleHttp\Psr7\Response($statusCode, [], $content);
     }
 }
