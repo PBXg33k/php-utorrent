@@ -1,0 +1,9 @@
+<?php
+
+$host=[
+    'host' => '127.0.0.1',
+    'port' => '8080',
+    'username' => 'admin',
+    'password' => 'password',
+    'path' => '/gui'
+];
