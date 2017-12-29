@@ -2,6 +2,7 @@
 namespace Pbxg33k\UtorrentClient;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Pbxg33k\UtorrentClient\Model;
@@ -18,6 +19,11 @@ class UtorrentClient
      * @var CacheItemPoolInterface
      */
     protected $cache;
+
+    /**
+     * @var ClientInterface
+     */
+    protected $client;
 
     /**
      * @var string
@@ -144,8 +150,7 @@ class UtorrentClient
     {
         $request = $this->addTokenToRequest($request);
 
-        $client = new Client();
-        return $client->send($request, [
+        return $this->getClient()->send($request, [
             'auth' => [$this->username, $this->password]
         ]);
     }
@@ -172,8 +177,7 @@ class UtorrentClient
      */
     protected function doTokenRequest()
     {
-        $client = new Client();
-        return $client->request('GET', $this->constructRequest('token.html')->getUri(), [
+        return $this->getClient()->request('GET', $this->constructRequest('token.html')->getUri(), [
             'auth' => [$this->username, $this->password]
         ]);
     }
@@ -304,5 +308,27 @@ class UtorrentClient
     public function setCache(CacheItemPoolInterface $cache)
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * @return ClientInterface
+     */
+    public function getClient(): Client
+    {
+        if(!$this->client) {
+            $this->setClient(new Client());
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * @param ClientInterface $client
+     * @return UtorrentClient
+     */
+    public function setClient(ClientInterface $client): UtorrentClient
+    {
+        $this->client = $client;
+        return $this;
     }
 }
