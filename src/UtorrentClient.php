@@ -1,6 +1,7 @@
 <?php
 namespace Pbxg33k\UtorrentClient;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
@@ -95,6 +96,19 @@ class UtorrentClient
         return $this->token;
     }
 
+    /**
+     * @param Model\Token $token
+     * @return UtorrentClient
+     */
+    public function setToken(Model\Token $token): UtorrentClient
+    {
+        $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * @return ListResponse
+     */
     public function getTorrents()
     {
         $response = $this->doRequest($this->constructRequest(null,['list' => 1]));
