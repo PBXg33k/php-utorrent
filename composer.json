@@ -15,5 +15,5 @@
         "psr-4": {
             "Pbxg33k\\UtorrentClient\\": "src"
         }
-    },
+    }
 }
