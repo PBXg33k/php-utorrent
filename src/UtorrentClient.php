@@ -116,6 +116,10 @@ class UtorrentClient
         return $listResponse;
     }
 
+    /**
+     * @param string $hash
+     * @return PropResponse
+     */
     public function getTorrent(string $hash) {
         $response = $this->doRequest($this->constructRequest(null,[
             'action' => 'getprops',
@@ -125,6 +129,9 @@ class UtorrentClient
         return (new PropResponse())->fromHtml($response->getBody()->getContents());
     }
 
+    /**
+     * @return SettingsResponse
+     */
     public function getSettings()
     {
         $response = $this->doRequest($this->constructRequest(null, ['action' => 'getsettings']));

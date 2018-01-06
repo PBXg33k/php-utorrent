@@ -30,4 +30,18 @@ class SettingsResponse extends BaseResponse
 
         return $this;
     }
+
+    /**
+     * Return this object in a string format as originaly
+     * returned from uTorrent web API
+     * @return string
+     */
+    public function toOrigFormat(): \stdClass
+    {
+        $returnObj = new \stdClass();
+        $returnObj->build = $this->build;
+        $returnObj->settings = $this->collectionToOrigJson($this->settings);
+
+        return $returnObj;
+    }
 }

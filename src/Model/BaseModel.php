@@ -25,4 +25,25 @@ abstract class BaseModel
             throw new \Exception('No mapping found and fromJson not overridden');
         }
     }
+
+    /**
+     * Transform object into its original format as returned by uTorrent
+     */
+    public function toOriginal()
+    {
+        if(is_array($this->map)) {
+            $returnArray = [];
+            foreach($this->map as $propKey => $offset) {
+                if(is_numeric($offset)) {
+                    $returnArray[] = $this->{$propKey};
+                } else {
+                    $returnArray[$offset] = $this->{$propKey};
+                }
+            }
+
+            return $returnArray;
+        } else {
+            throw new \Exception('No mapping found and toOriginal not overridden');
+        }
+    }
 }

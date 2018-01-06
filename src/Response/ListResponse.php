@@ -88,6 +88,18 @@ class ListResponse extends BaseResponse
         return $this;
     }
 
+    public function toOrigFormat() : \stdClass
+    {
+        $return = new \stdClass();
+        $return->build = $this->build;
+        $return->label = $this->collectionToOrigJson($this->labels);
+        $return->torrents = $this->collectionToOrigJson($this->torrents);
+        $return->rssfeeds = $this->collectionToOrigJson($this->rssFeeds);
+        $return->rssfilters = $this->collectionToOrigJson($this->rssFilters);
+
+        return $return;
+    }
+
     /**
      * @return int
      */

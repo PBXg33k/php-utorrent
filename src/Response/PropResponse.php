@@ -31,4 +31,11 @@ class PropResponse extends BaseResponse
 
         return $this;
     }
+
+    public function toOrigFormat(): \stdClass
+    {
+        $returnObj = new \stdClass();
+        $returnObj->build = $this->build;
+        $returnObj->props = $this->collectionToOrigJson($this->props);
+    }
 }

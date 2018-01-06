@@ -41,6 +41,19 @@ class SettingItem extends BaseModel
         return $this;
     }
 
+    public function toOriginal()
+    {
+        $value = ($this->value === false) ? "false" :
+            ($this->value === true) ? "true" :
+            $this->value;
+
+        return [
+            $this->name,
+            $this->type,
+            (string)$value
+        ];
+    }
+
     /**
      * @return string
      */

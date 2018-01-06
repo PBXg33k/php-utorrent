@@ -1,6 +1,8 @@
 <?php
 namespace Pbxg33k\UtorrentClient\Response;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pbxg33k\UtorrentClient\Model\BaseModel;
 use Psr\Cache\CacheItemPoolInterface;
 
 abstract class BaseResponse
@@ -40,4 +42,22 @@ abstract class BaseResponse
     }
 
     public abstract function fromJson($json);
+
+    /**
+     * Return this object in a string format as originaly
+     * returned from uTorrent web API
+     * @return string
+     */
+    public abstract function toOrigFormat(): \stdClass;
+
+    protected function collectionToOrigJson(ArrayCollection $array):array
+    {
+        $return = array_map(function ($item) {
+            /** @var BaseModel $item */
+            return $item->toOriginal();
+        }, $array->toArray());
+
+        return $return;
+    }
+
 }
