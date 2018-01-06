@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pbxg33k\UtorrentClient\Model\BaseModel;
 use Pbxg33k\UtorrentClient\Model\TorrentProp;
 
-class PropResponse extends BaseModel
+class PropResponse extends BaseResponse
 {
     /**
      * @var int
