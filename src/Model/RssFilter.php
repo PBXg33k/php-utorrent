@@ -69,24 +69,24 @@ class RssFilter extends BaseModel
      */
     protected $resolvingCandidate;
 
-    public function fromJson($json)
-    {
-        $this->id = $json[0];
-        $this->flags = $json[1];
-        $this->name = $json[2];
-        $this->filter = $json[3];
-        $this->notFilter = $json[4];
-        $this->directory = $json[5];
-        $this->feed = $json[6];
-        $this->quality = $json[7];
-        $this->label = $json[8];
-        $this->postponeMode = $json[9];
-        $this->lastMatch = $json[10];
-        $this->smartEpFilter = $json[11];
-        $this->repackEpFilter = $json[12];
-        $this->episodeFilterStr = $json[13];
-        $this->episodeFilter = $json[14];
-        $this->resolvingCandidate = $json[15];
+    protected $map = [
+        "id" => 0,
+        "flags" => 1,
+        "name" => 2,
+        "filter" => 3,
+        "notFilter" => 4,
+        "directory" => 5,
+        "feed" => 6,
+        "quality" => 7,
+        "label" => 8,
+        "postponeMode" => 9,
+        "lastMatch" => 10,
+        "smartEpFilter" => 11,
+        "repackEpFilter" => 12,
+        "episodeFilterStr" => 13,
+        "episodeFilter" => 14,
+        "resolvingCandidate" => 15,
+    ];
 
         return $this;
     }

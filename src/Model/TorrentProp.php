@@ -69,23 +69,20 @@ class TorrentProp extends BaseModel
      */
     protected $ulslots;
 
-    public function fromJson($json)
-    {
-        $this->hash = $json->hash;
-        $this->trackers = $json->trackers;
-        $this->ulrate = $json->ulrate;
-        $this->dlrate = $json->dlrate;
-        $this->superseed = $json->superseed;
-        $this->dht = $json->dht;
-        $this->pex = $json->pex;
-        $this->seed_override = $json->seed_override;
-        $this->seed_ratio = $json->seed_ratio;
-        $this->seed_time = $json->seed_time;
-        $this->ulslots = $json->ulslots;
-
-        return $this;
-    }
-
+    protected $map = [
+        "hash" => "hash",
+        "trackers" => "trackers",
+        "ulrate" => "ulrate",
+        "dlrate" => "dlrate",
+        "superseed" => "superseed",
+        "dht" => "dht",
+        "pex" => "pex",
+        "seed_override" => "seed_override",
+        "seed_ratio" => "seed_ratio",
+        "seed_time" => "seed_time",
+        "ulslots" => "ulslots",
+    ];
+    
     /**
      * @return string
      */

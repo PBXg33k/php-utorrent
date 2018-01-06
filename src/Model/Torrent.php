@@ -81,30 +81,27 @@ class Torrent extends BaseModel
      */
     protected $remaining;
 
-    public function fromJson($json)
-    {
-        $this->hash = $json[0];
-        $this->status = $json[1];
-        $this->name = $json[2];
-        $this->size = $json[3];
-        $this->progress = $json[4];
-        $this->downloaded = $json[5];
-        $this->uploaded = $json[6];
-        $this->ratio = $json[7];
-        $this->uploadSpeed = $json[8];
-        $this->downloadSpeed = $json[9];
-        $this->eta = $json[10];
-        $this->label = $json[11];
-        $this->peersConnected = $json[12];
-        $this->peersInSwarm = $json[13];
-        $this->seedsConnected = $json[14];
-        $this->seedsInSwarm = $json[15];
-        $this->availability = $json[16];
-        $this->queueOrder = $json[17];
-        $this->remaining = $json[18];
-
-        return $this;
-    }
+    protected $map = [
+        'hash' => 0,
+        'status' => 1,
+        'name' => 2,
+        'size' => 3,
+        'progress' => 4,
+        'downloaded' => 5,
+        'uploaded' => 6,
+        'ratio' => 7,
+        'uploadSpeed' => 8,
+        'downloadSpeed' => 9,
+        'eta' => 10,
+        'label' => 11,
+        'peersConnected' => 12,
+        'peersInSwarm' => 13,
+        'seedsConnected' => 14,
+        'seedsInSwarm' => 15,
+        'availability' => 16,
+        'queueOrder' => 17,
+        'remaining' => 18,
+    ];
 
     /**
      * @return string

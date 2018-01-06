@@ -13,12 +13,10 @@ class Label extends BaseModel
      */
     protected $torrents;
 
-    public function fromJson($json)
-    {
-        $this->name = $json[0];
-        $this->torrents = $json[1];
-        return $this;
-    }
+    protected $map = [
+        'name' => 0,
+        'torrents' => 1
+    ];
 
     /**
      * @return string

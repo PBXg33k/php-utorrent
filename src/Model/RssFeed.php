@@ -42,6 +42,17 @@ class RssFeed extends BaseModel
      */
     protected $items;
 
+    protected $map = [
+        "id" => 0,
+        "enabled" => 1,
+        "useFeedTitle" => 2,
+        "userSelected" => 3,
+        "programmed" => 4,
+        "downloadState" => 5,
+        "url" => 6,
+        "nextUpdate" => 7,
+    ];
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -49,14 +60,7 @@ class RssFeed extends BaseModel
 
     public function fromJson($json)
     {
-        $this->id = $json[0];
-        $this->enabled = $json[1];
-        $this->useFeedTitle = $json[2];
-        $this->userSelected = $json[3];
-        $this->programmed = $json[4];
-        $this->downloadState = $json[5];
-        $this->url = $json[6];
-        $this->nextUpdate = $json[7];
+        parent::fromJson($json);
 
         foreach($json[8] as $item) {
             $this->items->add((new RssItem())->fromJson($item));
