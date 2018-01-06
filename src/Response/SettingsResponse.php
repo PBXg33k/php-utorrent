@@ -36,7 +36,7 @@ class SettingsResponse extends BaseResponse
      * returned from uTorrent web API
      * @return string
      */
-    public function toOrigFormat(): \stdClass
+    protected function toOrigFormat(): \stdClass
     {
         $returnObj = new \stdClass();
         $returnObj->build = $this->build;

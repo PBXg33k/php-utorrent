@@ -88,7 +88,7 @@ class ListResponse extends BaseResponse
         return $this;
     }
 
-    public function toOrigFormat() : \stdClass
+    protected function toOrigFormat() : \stdClass
     {
         $return = new \stdClass();
         $return->build = $this->build;

@@ -48,7 +48,15 @@ abstract class BaseResponse
      * returned from uTorrent web API
      * @return string
      */
-    public abstract function toOrigFormat(): \stdClass;
+    protected abstract function toOrigFormat(): \stdClass;
+
+    /**
+     * Returns response as formatted by uTorrent
+     * @return string
+     */
+    public function toOriginalFormatString(): string {
+        return \GuzzleHttp\json_encode($this->toOrigFormat(), JSON_UNESCAPED_SLASHES);
+    }
 
     protected function collectionToOrigJson(ArrayCollection $array):array
     {
