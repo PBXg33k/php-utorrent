@@ -250,7 +250,7 @@ class RssItem extends BaseModel
     /**
      * @return bool
      */
-    public function isRepack(): bool
+    public function getRepack(): bool
     {
         return $this->repack;
     }
@@ -268,7 +268,7 @@ class RssItem extends BaseModel
     /**
      * @return bool
      */
-    public function isInHistory(): bool
+    public function getInHistory(): bool
     {
         return $this->inHistory;
     }

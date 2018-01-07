@@ -19,16 +19,20 @@ abstract class BaseModel
                 } else {
                     $val = $json->{$offset};
                 }
-                $setterName = "set".implode('',array_map('ucfirst',explode('_',$propKey)));
-                if(method_exists($this, $setterName)) {
-                    $this->{$setterName}($val);
-                } else {
-                    $this->{$propKey} = $val;
-                }
+                $this->setObectValue($propKey, $val);
             }
             return $this;
         } else {
             throw new \Exception('No mapping found and fromJson not overridden');
+        }
+    }
+
+    protected function setObectValue($key, $value) {
+        $setterName = "set".implode('',array_map('ucfirst',explode('_',$key)));
+        if(method_exists($this, $setterName)) {
+            $this->{$setterName}($value);
+        } else {
+            $this->{$key} = $value;
         }
     }
 
@@ -40,10 +44,11 @@ abstract class BaseModel
         if(is_array($this->map)) {
             $returnArray = [];
             foreach($this->map as $propKey => $offset) {
+                $getterName = "get".implode('',array_map('ucfirst',explode('_',$propKey)));
                 if(is_numeric($offset)) {
-                    $returnArray[] = $this->{$propKey};
+                    $returnArray[] = $this->{$getterName}();
                 } else {
-                    $returnArray[$offset] = $this->{$propKey};
+                    $returnArray[$offset] = $this->{$getterName}();
                 }
             }
 

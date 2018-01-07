@@ -93,7 +93,7 @@ class RssFeed extends BaseModel
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
@@ -101,7 +101,7 @@ class RssFeed extends BaseModel
     /**
      * @return bool
      */
-    public function isUseFeedTitle(): bool
+    public function getUseFeedTitle(): bool
     {
         return $this->useFeedTitle;
     }
@@ -109,7 +109,7 @@ class RssFeed extends BaseModel
     /**
      * @return bool
      */
-    public function isUserSelected(): bool
+    public function getUserSelected(): bool
     {
         return $this->userSelected;
     }
@@ -117,7 +117,7 @@ class RssFeed extends BaseModel
     /**
      * @return bool
      */
-    public function isProgrammed(): bool
+    public function getProgrammed(): bool
     {
         return $this->programmed;
     }

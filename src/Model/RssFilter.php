@@ -343,7 +343,7 @@ class RssFilter extends BaseModel
     /**
      * @return bool
      */
-    public function isEpisodeFilter(): bool
+    public function getEpisodeFilter(): bool
     {
         return $this->episodeFilter;
     }
@@ -361,7 +361,7 @@ class RssFilter extends BaseModel
     /**
      * @return bool
      */
-    public function isResolvingCandidate(): bool
+    public function getResolvingCandidate(): bool
     {
         return $this->resolvingCandidate;
     }

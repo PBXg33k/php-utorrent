@@ -3,6 +3,15 @@ namespace Pbxg33k\UtorrentClient\Model;
 
 class Torrent extends BaseModel
 {
+    const STATUS_STARTED            = 1;
+    const STATUS_CHEKING            = 2;
+    const STATUS_START_AFTER_CHECK  = 4;
+    const STATUS_CHECKED            = 8;
+    const STATUS_ERROR              = 16;
+    const STATUS_PAUSED             = 32;
+    const STATUS_QUEUED             = 64;
+    const STATUS_LOADED             = 128;
+
     /**
      * @var string
      */
@@ -126,16 +135,18 @@ class Torrent extends BaseModel
      */
     public function getStatus(): int
     {
-        return $this->status;
+        return bindec($this->status);
     }
 
     /**
+     * Set the binary value for status
+     *
      * @param int $status
      * @return Torrent
      */
     public function setStatus(int $status): Torrent
     {
-        $this->status = $status;
+        $this->status = decbin($status);
         return $this;
     }
 
