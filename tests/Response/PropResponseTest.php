@@ -49,6 +49,7 @@ class PropResponseTest extends \PHPUnit\Framework\TestCase
     public function canDecodeFromUtorrentResponse()
     {
         $this->assertEquals(25110, $this->propResponse->getBuild());
+
     }
 
     /**

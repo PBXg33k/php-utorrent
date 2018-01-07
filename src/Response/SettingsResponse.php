@@ -44,4 +44,20 @@ class SettingsResponse extends BaseResponse
 
         return $returnObj;
     }
+
+    /**
+     * @return int
+     */
+    public function getBuild(): int
+    {
+        return $this->build;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSettings(): ArrayCollection
+    {
+        return $this->settings;
+    }
 }

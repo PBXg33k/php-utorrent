@@ -139,6 +139,35 @@ final class UtorrentClientTest extends TestCase
         $this->assertEquals('1234567890ABCDEF1234567890ABCDEF12345678', $torrent->getProps()->first()->getHash());
     }
 
+    /**
+     * @test
+     */
+    public function getSettings()
+    {
+        $this->injectToken();
+        $this->client->expects($this->once())->method('send')->willReturn(
+            $this->buildResponse(file_get_contents(__DIR__.'/mock-response/action-getsettings'))
+        );
+
+        $settings = $this->utorrentClient->getSettings();
+        $this->assertEquals(25110, $settings->getBuild());
+
+        $this->assertEquals('torrents_start_stopped', $settings->getSettings()->first()->getName());
+        $this->assertEquals(1, $settings->getSettings()->first()->getType());
+        $this->assertEquals(false, $settings->getSettings()->first()->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function gettingClientWillCreateNewClient()
+    {
+        $this->utorrentClient = new \Pbxg33k\UtorrentClient\UtorrentClient(self::HOST, self::PORT, self::USER,self::PASS, self::PATH);
+        $this->utorrentClient->setCache($this->cache);
+
+        $this->assertInstanceOf(\GuzzleHttp\Client::class, $this->utorrentClient->getClient());
+    }
+
     protected function injectToken()
     {
         $token = new \Pbxg33k\UtorrentClient\Model\Token('cachedToken');

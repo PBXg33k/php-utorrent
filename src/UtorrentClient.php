@@ -139,26 +139,28 @@ class UtorrentClient
         return (new SettingsResponse())->fromHtml($response->getBody()->getContents());
     }
 
-    public function setSettings()
-    {
-        // Get the current settings in order to diff
-        // and send one or more requests with only the updated values
-        // This can be one or more requests
-        $oldSettings = $this->getSettings();
+//    WIP
 
-        // When sending updated settings to uTorrent use this:
-        //s:superseed
-        //v:0
-        //s:dht
-        //v:0
-        //s:pex
-        //v:0
-        //
-        // S: Key
-        // V: Value
-
-        // If A-OK, response will be a HTTP Status 200 with only the build number in the response
-    }
+//    public function setSettings()
+//    {
+//        // Get the current settings in order to diff
+//        // and send one or more requests with only the updated values
+//        // This can be one or more requests
+//        $oldSettings = $this->getSettings();
+//
+//        // When sending updated settings to uTorrent use this:
+//        //s:superseed
+//        //v:0
+//        //s:dht
+//        //v:0
+//        //s:pex
+//        //v:0
+//        //
+//        // S: Key
+//        // V: Value
+//
+//        // If A-OK, response will be a HTTP Status 200 with only the build number in the response
+//    }
 
     /**
      * Makes a request.
