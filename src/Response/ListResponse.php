@@ -2,6 +2,7 @@
 namespace Pbxg33k\UtorrentClient\Response;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Pbxg33k\UtorrentClient\Model\Label;
 use Pbxg33k\UtorrentClient\Model\RssFeed;
 use Pbxg33k\UtorrentClient\Model\RssFilter;
@@ -54,7 +55,7 @@ class ListResponse extends BaseResponse
      * @param $json
      * @return $this
      */
-    public function fromJson($json)
+    public function fromJson($json) : ListResponse
     {
         $this->build = $json->build;
         $this->torrentc = $json->torrentc;
@@ -149,5 +150,36 @@ class ListResponse extends BaseResponse
         return $this->rssFilters;
     }
 
+    /**
+     * @param Criteria $criteria
+     * @return ListResponse
+     */
+    public function filterTorrents(Criteria $criteria): ListResponse
+    {
+        $this->torrents = $this->torrents->matching($criteria);
 
+        return $this;
+    }
+
+    /**
+     * @param Criteria $criteria
+     * @return ListResponse
+     */
+    public function filterRssFeeds(Criteria $criteria): ListResponse
+    {
+        $this->rssFeeds = $this->rssFeeds->matching($criteria);
+
+        return $this;
+    }
+
+    /**
+     * @param Criteria $criteria
+     * @return ListResponse
+     */
+    public function filterRssFilters(Criteria $criteria): ListResponse
+    {
+        $this->rssFilters = $this->rssFilters->matching($criteria);
+
+        return $this;
+    }
 }

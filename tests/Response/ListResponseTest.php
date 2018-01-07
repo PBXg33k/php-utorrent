@@ -96,4 +96,34 @@ class ListResponseTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals("Cached", $this->listResponse->getTorrents()->first()->getName());
     }
+
+    /**
+     * @test
+     */
+    public function canFilterResult()
+    {
+        $this->cache->expects($this->exactly(2))->method('getItem')->willReturn($this->cacheItem);
+        $this->cacheItem->expects($this->exactly(2))->method('isHit');
+        $this->cacheItem->expects($this->exactly(2))->method('set');
+        $this->cache->expects($this->exactly(2))->method('saveDeferred');
+        $this->cache->expects($this->once())->method('commit');
+
+        $criteriaTorrent = \Doctrine\Common\Collections\Criteria::create()
+            ->where(\Doctrine\Common\Collections\Criteria::expr()->notIn('label',['Games']));
+        $criteriaFeeds = \Doctrine\Common\Collections\Criteria::create()
+            ->where(\Doctrine\Common\Collections\Criteria::expr()->contains('url', 'no hit'));
+        $criteriaFilters = \Doctrine\Common\Collections\Criteria::create()
+            ->where(\Doctrine\Common\Collections\Criteria::expr()->contains('name', 'no hit'));
+
+        $this->listResponse
+            ->fromHtml($this->inputString)
+            ->filterTorrents($criteriaTorrent)
+            ->filterRssFeeds($criteriaFeeds)
+            ->filterRssFilters($criteriaFilters);
+
+        $this->assertEquals(25110, $this->listResponse->getBuild());
+        $this->assertEquals("FEDCBA0987654321FEDCBA0987654321FEDCBA09", $this->listResponse->getTorrents()->first()->getHash());
+        $this->assertEquals(0, $this->listResponse->getRssFeeds()->count());
+        $this->assertEquals(0, $this->listResponse->getRssFilters()->count());
+    }
 }

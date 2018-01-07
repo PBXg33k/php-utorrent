@@ -29,7 +29,7 @@ abstract class BaseResponse
      * These are mostly control characters.
      *
      * @param $html
-     * @return mixed
+     * @return BaseResponse
      */
     public function fromHtml($html)
     {
@@ -41,6 +41,10 @@ abstract class BaseResponse
         return $this->fromJson(\json_decode($filteredContent));
     }
 
+    /**
+     * @param $json
+     * @return $this
+     */
     public abstract function fromJson($json);
 
     /**
