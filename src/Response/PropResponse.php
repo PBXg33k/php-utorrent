@@ -40,4 +40,20 @@ class PropResponse extends BaseResponse
 
         return $returnObj;
     }
+
+    /**
+     * @return int
+     */
+    public function getBuild(): int
+    {
+        return $this->build;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProps(): ArrayCollection
+    {
+        return $this->props;
+    }
 }
