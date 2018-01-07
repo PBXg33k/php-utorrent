@@ -15,9 +15,15 @@ abstract class BaseModel
         if(is_array($this->map)) {
             foreach($this->map as $propKey => $offset) {
                 if(is_numeric($offset)) {
-                    $this->{$propKey} = $json[$offset];
+                    $val = $json[$offset];
                 } else {
-                    $this->{$propKey} = $json->{$offset};
+                    $val = $json->{$offset};
+                }
+                $setterName = "set".implode('',array_map('ucfirst',explode('_',$propKey)));
+                if(method_exists($this, $setterName)) {
+                    $this->{$setterName}($val);
+                } else {
+                    $this->{$propKey} = $val;
                 }
             }
             return $this;
