@@ -58,7 +58,7 @@ class RssFeed extends BaseModel
         $this->items = new ArrayCollection();
     }
 
-    public function fromJson($json)
+    public function fromJson($json, array $filter = null)
     {
         parent::fromJson($json);
 

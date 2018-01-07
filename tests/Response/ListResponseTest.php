@@ -91,11 +91,52 @@ class ListResponseTest extends \PHPUnit\Framework\TestCase
     {
         $this->cache->expects($this->exactly(2))->method('getItem')->willReturn($this->cacheItem);
         $this->cacheItem->expects($this->exactly(2))->method('isHit')->willReturn(true);
-        $this->cacheItem->expects($this->exactly(2))->method('get')->willReturn((new \Pbxg33k\UtorrentClient\Model\Torrent())->setName("Cached"));
+        $this->cacheItem->expects($this->exactly(2))->method('get')->willReturn((new \Pbxg33k\UtorrentClient\Model\Torrent())->setSize(9001));
 
         $this->listResponse->fromHtml($this->inputString);
 
-        $this->assertEquals("Cached", $this->listResponse->getTorrents()->first()->getName());
+        $this->assertEquals(9001, $this->listResponse->getTorrents()->first()->getSize());
+    }
+
+    /**
+     * @test
+     */
+    public function willPartiallyUpdateCache()
+    {
+        $this->cache->expects($this->exactly(2))->method('getItem')->willReturn($this->cacheItem);
+        $this->cacheItem->expects($this->exactly(2))->method('isHit')->willReturn(true);
+        $this->cacheItem->expects($this->exactly(2))->method('get')->willReturn(
+            (new \Pbxg33k\UtorrentClient\Model\Torrent())
+                ->setName("Cache")
+                ->setProgress(0)
+                ->setRemaining(999)
+                ->setSize(11)
+                ->setPeersInSwarm(39)
+        );
+
+        $this->listResponse->fromHtml($this->inputString);
+
+        $torrent = $this->listResponse->getTorrents()->get(0);
+        $this->assertEquals("1234567890ABCDEF1234567890ABCDEF12345678", $torrent->getHash());
+        $this->assertEquals(137, $torrent->getStatus());
+        $this->assertEquals(1000, $torrent->getProgress());
+        $this->assertTrue((bool)(decbin($torrent->getStatus()) & \Pbxg33k\UtorrentClient\Model\Torrent::STATUS_STARTED));
+        $this->assertEquals(11, $torrent->getSize());
+        $this->assertEquals("Foo", $torrent->getName());
+        $this->assertEquals(1, $torrent->getRemaining());
+        $this->assertEquals(0, $torrent->getPeersInSwarm());
+
+        $torrent = $this->listResponse->getTorrents()->get(1);
+        $this->assertEquals("FEDCBA0987654321FEDCBA0987654321FEDCBA09", $torrent->getHash());
+        $this->assertEquals(200, $torrent->getStatus());
+        $this->assertEquals(0, $torrent->getProgress());
+        $this->assertFalse((bool)(decbin($torrent->getStatus()) & \Pbxg33k\UtorrentClient\Model\Torrent::STATUS_STARTED));
+        $this->assertEquals(11, $torrent->getSize());
+        $this->assertEquals("Bar", $torrent->getName());
+        $this->assertEquals(999, $torrent->getRemaining());
+        $this->assertEquals(39, $torrent->getPeersInSwarm());
+
+
     }
 
     /**

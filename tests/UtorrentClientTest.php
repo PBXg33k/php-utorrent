@@ -119,7 +119,7 @@ final class UtorrentClientTest extends TestCase
         $firstTorrent = $result->getTorrents()->first();
         $this->assertEquals('1234567890ABCDEF1234567890ABCDEF12345678', $firstTorrent->getHash());
         $this->assertEquals('Foo', $firstTorrent->getName());
-        $this->assertEquals(136, $firstTorrent->getStatus());
+        $this->assertEquals(137, $firstTorrent->getStatus());
         $this->assertEquals(1024, $firstTorrent->getSize());
         $this->assertEquals('Games', $firstTorrent->getLabel());
     }

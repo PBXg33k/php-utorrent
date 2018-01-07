@@ -10,10 +10,14 @@ abstract class BaseModel
         return $this->fromJson(\json_decode($html));
     }
 
-    public function fromJson($json)
+    public function fromJson($json, array $filter = [])
     {
         if(is_array($this->map)) {
             foreach($this->map as $propKey => $offset) {
+                // Only update specific properties if $filter is given
+                if(!empty($filter) && !in_array($propKey,$filter))
+                    continue;
+
                 if(is_numeric($offset)) {
                     $val = $json[$offset];
                 } else {
@@ -56,5 +60,17 @@ abstract class BaseModel
         } else {
             throw new \Exception('No mapping found and toOriginal not overridden');
         }
+    }
+
+    /**
+     * Partially update object from cache in subsequent calls
+     * ie: torrent calls which contains in progress torrents
+     *
+     * @param object $newData
+     * @return $this
+     */
+    public function refreshCache($newData)
+    {
+        return $this;
     }
 }

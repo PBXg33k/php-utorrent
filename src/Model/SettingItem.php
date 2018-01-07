@@ -24,7 +24,7 @@ class SettingItem extends BaseModel
      */
     protected $value;
 
-    public function fromJson($json)
+    public function fromJson($json, array $filter = null)
     {
         $this->name = $json[0];
         $this->type = $json[1];

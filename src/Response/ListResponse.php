@@ -67,13 +67,17 @@ class ListResponse extends BaseResponse
             $cachedTorrent = $this->cache->getItem(trim($torrent[0]));
             if($cachedTorrent->isHit()) {
                 /** @var Torrent $torrentObj */
-                $torrentObj = $cachedTorrent->get();
+                $clone = clone $cachedTorrent->get();
+                $torrentObj = $clone->refreshCache($torrent);
             } else {
                 $torrentObj = (new Torrent)->fromJson($torrent);
-                $cachedTorrent->set($torrentObj);
-                $this->cache->saveDeferred($cachedTorrent);
             }
+
+            $cachedTorrent->set($torrentObj);
+            $this->cache->saveDeferred($cachedTorrent);
+
             $this->torrents->add($torrentObj);
+            unset($torrentObj);
         }
 
         foreach($json->rssfeeds as $rssfeed) {

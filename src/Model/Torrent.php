@@ -112,6 +112,40 @@ class Torrent extends BaseModel
         'remaining' => 18,
     ];
 
+    public function refreshCache($newData, array $filter = null)
+    {
+        $updateProps = [
+            'hash',
+            'name',
+            'label',
+            'queueOrder',
+            'label'
+        ];
+
+        $this->setStatus($newData[$this->map['status']]);
+
+        if((bool)($this->status & self::STATUS_STARTED)) {
+            $updateProps = array_merge($updateProps, [
+                'progress',
+                'downloaded',
+                'uploaded',
+                'ratio',
+                'uploadSpeed',
+                'downloadSpeed',
+                'eta',
+                'peersConnected',
+                'peersInSwarm',
+                'seedsConnected',
+                'seedsInSwarm',
+                'remaining'
+            ]);
+        }
+
+        $this->fromJson($newData, $updateProps);
+
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -135,7 +169,7 @@ class Torrent extends BaseModel
      */
     public function getStatus(): int
     {
-        return bindec($this->status);
+        return $this->status;
     }
 
     /**
@@ -146,7 +180,7 @@ class Torrent extends BaseModel
      */
     public function setStatus(int $status): Torrent
     {
-        $this->status = decbin($status);
+        $this->status = $status;
         return $this;
     }
 
