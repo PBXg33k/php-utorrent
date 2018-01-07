@@ -81,4 +81,84 @@ class RssFeed extends BaseModel
 
         return $returnObj;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseFeedTitle(): bool
+    {
+        return $this->useFeedTitle;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserSelected(): bool
+    {
+        return $this->userSelected;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProgrammed(): bool
+    {
+        return $this->programmed;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDownloadState(): int
+    {
+        return $this->downloadState;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNextUpdate(): int
+    {
+        return $this->nextUpdate;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getItems(): ArrayCollection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMap(): array
+    {
+        return $this->map;
+    }
 }

@@ -6,8 +6,8 @@
 ["FEDCBA0987654321FEDCBA0987654321FEDCBA09",200,"Bar",102400,0,0,0,0,0,0,0,"",0,0,0,0,0,1,102400]]
 ,"torrentc":"1326537909"
 ,"rssfeeds":[
-[3,true,true,false,false,0,"Shana Project RSS|http://www.shanaproject.com/feeds/secure/user/34151/2K6CEN7TYU/",1514563689,[
+[3,true,true,false,false,0,"Feed RSS|http://www.domain.tld/",1514563689,[
 ["Netsuzou TRap - 8 HorribleSubs","Netsuzou TRap - 8 [1080p][HorribleSubs]","http://www.shanaproject.com/download/156493/?uid=34151&key=2K6CEN7TYU",14,0,1503572105,0,0,3,0,false,true]]]]
 ,"rssfilters":[
-[1,5,"http://www.shanaproject.com/feeds/secure/user/34151/2K6CEN7TYU/","*","","U:\\RSS",3,-1,"Shana Project RSS",0,1513528567,33587200,0,"",false,false]]
+[1,5,"http://www.domain.tld/","*","","U:\\RSS",3,-1,"RSS Filter",0,1513528567,33587200,0,"",false,false]]
 }

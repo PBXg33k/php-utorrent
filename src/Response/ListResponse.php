@@ -94,6 +94,7 @@ class ListResponse extends BaseResponse
         $return->build = $this->build;
         $return->label = $this->collectionToOrigJson($this->labels);
         $return->torrents = $this->collectionToOrigJson($this->torrents);
+        $return->torrentc = $this->torrentc;
         $return->rssfeeds = $this->collectionToOrigJson($this->rssFeeds);
         $return->rssfilters = $this->collectionToOrigJson($this->rssFilters);
 
