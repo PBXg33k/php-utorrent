@@ -73,24 +73,27 @@ class UtorrentClient
     {
         $cacheKey = "{$this->getCachePrefix()}_token";
         $cacheItem = $this->cache->getItem($cacheKey);
+        $tokenExists = isset($this->token);
 
         if($cacheItem->isHit()) {
-            /** @var \DateTimeInterface $expDateTime */
-            $expDateTime = $cacheItem->get()->getExpirationDateTime();
+            /** @var Model\Token $token */
+            $token = $cacheItem->get();
+            $expDateTime = $token->getExpirationDateTime();
             if($expDateTime > new \DateTime()) {
-                $this->token = $cacheItem->get();
-                return $this->token;
+                $this->token = $token;
+                $tokenExists = true;
             }
         }
 
-        $token = $this->doTokenRequest();
-        $token = $token->getBody()->getContents();
-        if (preg_match("~\<div\sid=\'token\'[^\>]+\>(.*)?\<\/div\>~", $token, $matches)) {
-            $this->token = new Model\Token($matches[1]);
-            $cacheItem->set($this->token);
-            $cacheItem->expiresAt($this->token->getExpirationDateTime());
-//            $cacheItem->tag('token');
-            $this->cache->save($cacheItem);
+        if(!$tokenExists) {
+            $token = $this->doTokenRequest();
+            $token = $token->getBody()->getContents();
+            if (preg_match("~\<div\sid=\'token\'[^\>]+\>(.*)?\<\/div\>~", $token, $matches)) {
+                $this->token = new Model\Token($matches[1]);
+                $cacheItem->set($this->token);
+                $cacheItem->expiresAt($this->token->getExpirationDateTime());
+                $this->cache->save($cacheItem);
+            }
         }
 
         return $this->token;

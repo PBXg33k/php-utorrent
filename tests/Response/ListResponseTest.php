@@ -64,6 +64,7 @@ class ListResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("http://www.domain.tld/", $this->listResponse->getRssFilters()->first()->getName());
         $this->assertEquals("1234567890ABCDEF1234567890ABCDEF12345678", $this->listResponse->getTorrents()->first()->getHash());
         $this->assertEquals(1326537909, $this->listResponse->getTorrentc());
+        $this->assertEquals(2, $this->listResponse->getTorrents()->count());
     }
 
     /**
@@ -122,6 +123,7 @@ class ListResponseTest extends \PHPUnit\Framework\TestCase
             ->filterRssFilters($criteriaFilters);
 
         $this->assertEquals(25110, $this->listResponse->getBuild());
+        $this->assertEquals(1, $this->listResponse->getTorrents()->count());
         $this->assertEquals("FEDCBA0987654321FEDCBA0987654321FEDCBA09", $this->listResponse->getTorrents()->first()->getHash());
         $this->assertEquals(0, $this->listResponse->getRssFeeds()->count());
         $this->assertEquals(0, $this->listResponse->getRssFilters()->count());

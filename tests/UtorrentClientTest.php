@@ -160,6 +160,21 @@ final class UtorrentClientTest extends TestCase
     /**
      * @test
      */
+    public function willFetchTokenIfNoTokenIsSet()
+    {
+        $cachedToken = new \Pbxg33k\UtorrentClient\Model\Token('test');
+
+        $this->cache->expects($this->once())->method('getItem')->willReturn($this->cacheItem);
+        $this->cacheItem->expects($this->once())->method('isHit')->willreturn(true);
+        $this->cacheItem->expects($this->once())->method('get')->willReturn($cachedToken);
+
+        $this->assertEquals('test', $this->utorrentClient->getToken()->getToken());
+
+    }
+
+    /**
+     * @test
+     */
     public function gettingClientWillCreateNewClient()
     {
         $this->utorrentClient = new \Pbxg33k\UtorrentClient\UtorrentClient(self::HOST, self::PORT, self::USER,self::PASS, self::PATH);
