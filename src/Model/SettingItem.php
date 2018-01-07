@@ -43,14 +43,23 @@ class SettingItem extends BaseModel
 
     public function toOriginal()
     {
-        $value = ($this->value === false) ? "false" :
-            ($this->value === true) ? "true" :
-            $this->value;
+        $value = $this->value;
+
+        // We have to wrap everything in quotes
+        switch (gettype($this->value)) {
+            case 'numeric':
+            case 'integer':
+                $value = (string)$this->value;
+                break;
+            case 'boolean':
+                $value = $this->value === true ? "true" : "false";
+                break;
+        }
 
         return [
             $this->name,
             $this->type,
-            (string)$value
+            $value
         ];
     }
 
