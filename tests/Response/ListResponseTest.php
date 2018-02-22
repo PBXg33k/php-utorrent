@@ -81,7 +81,7 @@ class ListResponseTest extends \PHPUnit\Framework\TestCase
         $this->listResponse
             ->fromHtml($this->inputString);
 
-        $this->assertEquals(str_replace("\n","", $this->inputString), $this->listResponse->toOriginalFormatString());
+        $this->assertEquals(str_replace(PHP_EOL ,"", $this->inputString), $this->listResponse->toOriginalFormatString());
     }
 
     /**

@@ -47,7 +47,7 @@ class SettingResponseTest extends \PHPUnit\Framework\TestCase
      */
     public function canRecreateuTorrentResponse()
     {
-        $this->assertEquals(str_replace("\n","", $this->inputString), $this->propResponse->toOriginalFormatString());
+        $this->assertEquals(str_replace(PHP_EOL ,"", $this->inputString), $this->propResponse->toOriginalFormatString());
     }
 
 }
