@@ -5,5 +5,5 @@ $host=[
     'port' => '8080',
     'username' => 'admin',
     'password' => 'password',
-    'path' => '/gui'
+    'path' => '/gui/'
 ];
