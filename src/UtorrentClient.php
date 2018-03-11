@@ -119,11 +119,22 @@ class UtorrentClient
         return $listResponse;
     }
 
+    public function getTorrent(string $hash)
+    {
+        $listResponse = $this->getTorrents();
+        return $listResponse->getTorrents()->filter(
+            /** @var Torrent $entry */
+            function($entry) use ($hash) {
+                return $entry->getHash() == $hash;
+            }
+        )->first();
+    }
+
     /**
      * @param string $hash
      * @return PropResponse
      */
-    public function getTorrent(string $hash) {
+    public function getTorrentProps(string $hash) {
         $response = $this->doRequest($this->constructRequest(null,[
             'action' => 'getprops',
             'hash' => $hash

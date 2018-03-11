@@ -131,10 +131,30 @@ final class UtorrentClientTest extends TestCase
     {
         $this->injectToken();
         $this->client->expects($this->once())->method('send')->willReturn(
+            $this->buildResponse(file_get_contents(__DIR__.'/mock-response/action-list'))
+        );
+
+        $this->cache->expects($this->exactly(2))->method('getItem')->willReturn($this->cacheItem);
+        $this->cacheItem->expects($this->exactly(2))->method('isHit');
+        $this->cacheItem->expects($this->exactly(2))->method('set');
+        $this->cache->expects($this->exactly(2))->method('saveDeferred');
+        $this->cache->expects($this->once())->method('commit');
+
+        $torrent = $this->utorrentClient->getTorrent('FEDCBA0987654321FEDCBA0987654321FEDCBA09');
+        $this->assertEquals('FEDCBA0987654321FEDCBA0987654321FEDCBA09', $torrent->getHash());
+    }
+
+    /**
+     * @test
+     */
+    public function getTorrentPropReturnsSingleTorrentProp()
+    {
+        $this->injectToken();
+        $this->client->expects($this->once())->method('send')->willReturn(
             $this->buildResponse(file_get_contents(__DIR__.'/mock-response/action-getprops'))
         );
 
-        $torrent = $this->utorrentClient->getTorrent('foo');
+        $torrent = $this->utorrentClient->getTorrentProps('foo');
         $this->assertEquals(25110,$torrent->getBuild());
         $this->assertEquals('1234567890ABCDEF1234567890ABCDEF12345678', $torrent->getProps()->first()->getHash());
     }
