@@ -1,8 +1,6 @@
 <?php
 class ListResponseTest extends \PHPUnit\Framework\TestCase
 {
-
-
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject
      */
@@ -81,7 +79,7 @@ class ListResponseTest extends \PHPUnit\Framework\TestCase
         $this->listResponse
             ->fromHtml($this->inputString);
 
-        $this->assertEquals(str_replace(PHP_EOL ,"", $this->inputString), $this->listResponse->toOriginalFormatString());
+        $this->assertEquals(trim(preg_replace('~\r\n?~',"", $this->inputString)), $this->listResponse->toOriginalFormatString());
     }
 
     /**

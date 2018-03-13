@@ -35,12 +35,12 @@ class FileResponse extends BaseResponse
         $this->build = $json->build;
 
         $fileCount = count($json->files);
-        for($i = 0; $i <= $fileCount; $i++) {
+        for($i = 0; $i < $fileCount; $i++) {
             // First item in the array is the hash of the torrent
             if($i==0) {
                 $this->torrentHash = $json->files[$i];
             } else {
-                $this->files->add((new File)->fromJson($json->files[$i]));
+                $this->files->add((new File)->fromJson($json->files[$i][0]));
             }
         }
 
@@ -59,5 +59,29 @@ class FileResponse extends BaseResponse
         $returnObj->files = array_merge([$this->torrentHash], $this->collectionToOrigJson($this->files));
 
         return $returnObj;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBuild(): int
+    {
+        return $this->build;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFiles(): ArrayCollection
+    {
+        return $this->files;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTorrentHash(): string
+    {
+        return $this->torrentHash;
     }
 }

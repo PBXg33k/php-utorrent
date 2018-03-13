@@ -57,6 +57,6 @@ class PropResponseTest extends \PHPUnit\Framework\TestCase
      */
     public function canRecreateuTorrentResponse()
     {
-        $this->assertEquals(str_replace(PHP_EOL ,"", $this->inputString), $this->propResponse->toOriginalFormatString());
+        $this->assertEquals(trim(preg_replace('~\r\n?~',"", $this->inputString)), $this->propResponse->toOriginalFormatString());
     }
 }
